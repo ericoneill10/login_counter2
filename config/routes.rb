@@ -1,4 +1,8 @@
 LoginCounter2::Application.routes.draw do
+  get "users/welcome"
+  post "users/login"
+  post "users/add"
+  root "users#welcome"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
