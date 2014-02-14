@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
-	#validates :user, :presence => true, :uniqueness => {case_sensitive: false}, :length => { maximum: 128 }
-	#validates :password, :presence => true
+	
 
 	SUCCESS = 1
 
@@ -15,6 +14,9 @@ class User < ActiveRecord::Base
 	MAX_USERNAME_LENGTH = 128
 
 	MAX_PASSWORD_LENGTH = 128
+
+	validates :user, :presence => true, :uniqueness => {case_sensitive: false}, :length => { maximum: MAX_USERNAME_LENGTH }
+	validates :password, :presence => true, :length => { maximum: MAX_PASSWORD_LENGTH}
 
 	def login(user, password)
 		usr_query = User.find_by user: user.downcase
@@ -34,13 +36,24 @@ class User < ActiveRecord::Base
 		if not user_query.nil?
 			return ERR_USER_EXISTS
 		end
+		/
 		if not valid_username(user)
 			return ERR_BAD_USERNAME
 		end
 		if not valid_password(password)
 			return ERR_BAD_PASSWORD
 		end
+		/
 		user_add = User.new(user: user, password: password, count: 1)
+		if not user_add.valid?
+			if user_add.errors.added? :user, :too_long, :count => MAX_USERNAME_LENGTH or user_add.errors.added? :user, :blank
+				return ERR_BAD_USERNAME
+			elsif user_add.errors.added? :password, :too_long, :count => MAX_PASSWORD_LENGTH
+				return ERR_BAD_PASSWORD
+			end
+		end
+
+		
 		user_add.save
 		return user_add.count
 		
@@ -48,7 +61,7 @@ class User < ActiveRecord::Base
 
 	end
 
-
+	/ UNNESSECARRY WITH VALIDATIONS
 	def valid_username(username)
 		# I don't know why I needed to do it like this, but doing it in one line
 		# made it fail
@@ -57,12 +70,14 @@ class User < ActiveRecord::Base
 		val3 =val1 and val2
 		return val3
 	end
+
 	def valid_password(password)
 		return password.length <= MAX_PASSWORD_LENGTH
 	end
-
+/
 	def reset()
-		ActiveRecord::Migration.drop_table(:users)
+		connection = ActiveRecord::Base.connection
+    	ActiveRecord::Base.connection.execute("DELETE FROM users")
 		return 1
 	end
 end

@@ -57,6 +57,10 @@ class UsersController < ApplicationController
   		@user = User.find(params[:id])
 	end
 
+	def unitTest
+		
+	end
+
 	private
 	  def post_params
 	    params.require(:post).permit(:user, :password, :count)
