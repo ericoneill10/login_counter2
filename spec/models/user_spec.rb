@@ -40,12 +40,12 @@ describe User do
   	before {@user.password = "a" *200}
   	it {should_not be_valid}
   end
-
+/
   describe "reset test" do 
   	user3 = User.new
   	val = user3.reset()
-  	expect{val}.to eq(1)
+  	expect(val).to eq(1)
   end
-
+/
 
 end

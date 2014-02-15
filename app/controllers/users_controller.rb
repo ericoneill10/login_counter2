@@ -60,6 +60,16 @@ class UsersController < ApplicationController
 	end
 
 	def unitTest
+		#cmd = "rake spec"
+		tests = JSON.parse("rspec --format j")
+		test_summary = Hash.new
+		fails = tests["summary"]["failure_count"]
+		num_tests = tests["summary"]["example_count"]
+		test_summary[:nrFailed] = fails
+      	test_summary[:totalTests] = num_tests
+      	test_summary[:output] = "rspec --format j"
+
+
 
 	end
 
