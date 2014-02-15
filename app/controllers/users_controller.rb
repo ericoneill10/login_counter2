@@ -1,4 +1,6 @@
+require 'json'
 class UsersController < ApplicationController
+  skip_before_action :verify_authenticity_token
   def welcome
   end
 
@@ -24,8 +26,8 @@ class UsersController < ApplicationController
 	  	response = user.add(request_params[:user],request_params[:password])
 	  	ret_val = Hash.new
 	  	if response >= 0
-	  		ret[:errCode] = 1
-	  		ret[:count] = response
+	  		ret_val[:errCode] = 1
+	  		ret_val[:count] = response
 	  		render :json => ret_val
 	  		
 	  	else
@@ -58,7 +60,7 @@ class UsersController < ApplicationController
 	end
 
 	def unitTest
-		
+
 	end
 
 	private

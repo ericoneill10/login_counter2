@@ -3,6 +3,9 @@ LoginCounter2::Application.routes.draw do
   post "users/login"
   post "users/add"
   root "users#welcome"
+
+  match 'TESTAPI/resetFixture', to: 'users#reset', via: 'post'
+  match 'TESTAPI/unitTests', to: 'users#unittest', via: 'post'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
