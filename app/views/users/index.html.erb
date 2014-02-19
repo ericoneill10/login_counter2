@@ -1,0 +1,22 @@
+<div id="top_message"><b>Please Enter Your Credentials Below</b></h5></div>
+<div id="bottom_message"></h5></div>
+
+
+<%= form_for :user, html: => {id: => "login_form"} do |f| %>
+  <p>
+    <%= f.label :username %><br>
+    <%= f.text_field :user %>
+  </p>
+ 
+  <p>
+    <%= f.label :password %><br>
+    <%= f.text_area :password %>
+  </p>
+ 
+  <p>
+    <%= submit_tag "Login", :type => 'button', id: "login_submit" %>
+    <%= submit_tag "Add User", :type => 'button', id: "add_submit" %>
+    
+  </p>
+<% end %>
+<%= submit_tag "Logout", :type => 'button', id: "logout_submit" %>

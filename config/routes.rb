@@ -2,7 +2,7 @@ LoginCounter2::Application.routes.draw do
   get "users/welcome"
   post "users/login"
   post "users/add"
-  root "users#welcome"
+  root "users#index"
 
   match 'TESTAPI/resetFixture', to: 'users#reset', via: 'post'
   match 'TESTAPI/unitTests', to: 'users#unittest', via: 'post'
