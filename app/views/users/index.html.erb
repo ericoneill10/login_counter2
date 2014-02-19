@@ -2,7 +2,7 @@
 <div id="bottom_message"></h5></div>
 
 
-<%= form_for :user, html: => {id: => "login_form"} do |f| %>
+<%= form_for :user, :html => {:id => "login_form"} do |f| %>
   <p>
     <%= f.label :username %><br>
     <%= f.text_field :user %>
