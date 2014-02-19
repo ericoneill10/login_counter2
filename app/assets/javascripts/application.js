@@ -63,9 +63,9 @@ function handle_response(data, user){
 $('#add_submit').click(function() {
 	var username = $("#user_user").val()
  	var password = $("#user_password").val()
- 	request = $.ajax({
+ 	$.ajax({
 			  url: '/users/add',
-			  type: 'post',	
+			  type: 'POST',	
 	          dataType: 'json',
 	          data: {"user":username, "password":password},
 	          success: function  (err) {
@@ -79,9 +79,9 @@ $('#add_submit').click(function() {
 $('#login_submit').click(function() {
 	var username = $("#user_user").val()
  	var password = $("#user_password").val()
- 	request = $.ajax({
+ 	$.ajax({
 			  url: '/users/login',
-			  type: 'post',	
+			  type: 'POST',	
 	          dataType: 'json',
 	          data: {"user":username, "password":password},
 	          success: function  (err) {
