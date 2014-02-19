@@ -61,8 +61,10 @@ function handle_response(data, user){
 }
 
 $('#add_submit').click(function() {
+	console.log("a");
 	var username = $("#user_user").val()
  	var password = $("#user_password").val()
+ 	console.log("b");
  	$.ajax({
 			  url: '/users/add',
 			  type: 'POST',	
@@ -72,11 +74,12 @@ $('#add_submit').click(function() {
 	          	handle_response(username, err)
 	          }
 	    });
-
+ 	console.log("c");
    return false;
 });
 
 $('#login_submit').click(function() {
+	console.log("a");
 	var username = $("#user_user").val()
  	var password = $("#user_password").val()
  	$.ajax({
