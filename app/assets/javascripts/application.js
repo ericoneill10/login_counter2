@@ -16,22 +16,24 @@
 //= require_tree .
 
 $(document).ready(function() {
-	show_login_page()
+	$('#logout_submit').hide()
 
-});
+
 
 function show_login_page(message) {
 	if(!message) message = "Please enter your credentials below";
-	$("#top_message").text(message);
+	$("#top_message").html(message);
 	$("#login_form").show();
 	$("#bottom_message").hide();
 	$("#logout_submit").hide();
+	$("#user_user").val("")
+	$("#user_password").val("")
 	
 
 }
 
 function show_welcome_page(user, count){
-	$("#top_message").text("Welcome "+user+"<br>You have logged in "+count+"times.")
+	$("#top_message").html("Welcome "+user+"<br>You have logged in "+count+"times.")
 	$("#login_form").hide();
 	$("#logout_submit").show();
 
@@ -39,10 +41,13 @@ function show_welcome_page(user, count){
 
 function handle_response(data, user){
 	var message = ""
+	console.log(data["errCode"])
 	if(data["errCode"]>0){
+		console.log("a")
 		show_welcome_page(user, data["count"]);
 	}
 	else{
+		console.log("b")
 		error = data["errCode"];
 		if(error == -1){
 			message = "Invalid username and password combination";
@@ -56,52 +61,52 @@ function handle_response(data, user){
 		if(error == -4){
 			message = "Password must be shorter than 128 characters";
 		}
-		$("#top_message").text(message);
+		//$("#top_message").text(message);
+		show_login_page(message);
 	}
 }
 
-$('#add_submit').click(function() {
-	console.log("a");
-	var username = $("#user_user").val()
- 	var password = $("#user_password").val()
- 	console.log("b");
- 	$.ajax({
-			  url: '/users/add',
-			  type: 'POST',	
-	          dataType: 'json',
-	          data: {"user":username, "password":password},
-	          success: function  (err) {
-	          	handle_response(username, err)
-	          }
-	    });
- 	console.log("c");
-   return false;
+	$('#add_submit').click(function() {
+		var username = $("#user_user").val()
+	 	var password = $("#user_password").val()
+	 	request = $.ajax({
+				  url: '/users/add',
+				  type: 'POST',	
+				  
+		          dataType: 'json',
+		          data: {"user":username, "password":password},
+		          success: function  (err) {
+		          	handle_response(err, username)
+		          }
+		    });
+	   
+	});
+
+	$('#login_submit').click(function() {
+		console.log("a");
+		var username = $("#user_user").val()
+	 	var password = $("#user_password").val()
+	 	request = $.ajax({
+				  url: '/users/login',
+				  type: 'POST',	
+				  
+		          dataType: 'json',
+		          data: {"user":username, "password":password},
+		          success: function  (err) {
+		          	handle_response(err, username)
+		          }
+		    });
+
+	   
+	});
+
+	$('#logout_submit').click(function() {
+	  show_login_page();
+
+	  
+	});
+
 });
-
-$('#login_submit').click(function() {
-	console.log("a");
-	var username = $("#user_user").val()
- 	var password = $("#user_password").val()
- 	$.ajax({
-			  url: '/users/login',
-			  type: 'POST',	
-	          dataType: 'json',
-	          data: {"user":username, "password":password},
-	          success: function  (err) {
-	          	handle_response(username, err)
-	          }
-	    });
-
-   return false;
-});
-
-$('#logout_submit').click(function() {
-  show_login_page();
-
-  return false;
-});
-
-
 
 
 
