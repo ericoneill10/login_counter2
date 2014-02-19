@@ -15,3 +15,90 @@
 //= require turbolinks
 //= require_tree .
 
+$(document).ready(function() {
+	show_login_page()
+
+});
+
+function show_login_page(message) {
+	if(!message) message = "Please enter your credentials below";
+	$("#top_message").text(message);
+	$("#login_form").show();
+	$("#bottom_message").hide();
+	$("#logout_submit").hide();
+	
+
+}
+
+function show_welcome_page(user, count){
+	$("#top_message").text("Welcome "+user+"<br>You have logged in "+count+"times.")
+	$("#login_form").hide();
+	$("#logout_submit").show();
+
+}
+
+function handle_response(data, user){
+	var message = ""
+	if(data["errCode"]>0){
+		show_welcome_page(user, data["count"]);
+	}
+	else{
+		error = data["errCode"];
+		if(error == -1){
+			message = "Invalid username and password combination";
+		}
+		if(error == -2){
+			message = "User name already exists";
+		}
+		if(error == -3){
+			message = "User name must be non-empty and shorter than 128 characters";
+		}
+		if(error == -4){
+			message = "Password must be shorter than 128 characters";
+		}
+		$("#top_message").text(message);
+	}
+}
+
+$('#add_submit').click(function() {
+	var username = $("#user_user").val()
+ 	var password = $("#user_password").val()
+ 	request = $.ajax({
+			  url: '/users/add',
+			  type: 'post',	
+	          dataType: 'json',
+	          data: {"user":username, "password":password},
+	          success: function  (err) {
+	          	handle_response(username, err)
+	          }
+	    });
+
+   return false;
+});
+
+$('#login_submit').click(function() {
+	var username = $("#user_user").val()
+ 	var password = $("#user_password").val()
+ 	request = $.ajax({
+			  url: '/users/login',
+			  type: 'post',	
+	          dataType: 'json',
+	          data: {"user":username, "password":password},
+	          success: function  (err) {
+	          	handle_response(username, err)
+	          }
+	    });
+
+   return false;
+});
+
+$('#logout_submit').click(function() {
+  show_login_page();
+
+  return false;
+});
+
+
+
+
+
